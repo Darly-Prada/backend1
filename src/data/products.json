@@ -1,56 +1,66 @@
 [
   {
-      "id": 10101,
-      "code": "shop01",
-      "title": "Vestido Clasico",
-      "description": "Vestido Clasico para ocasiones especiales",
-      "category": "Ropa",
-      "price": 2750,
-      "stock": 6
+    "id": 10101,
+    "code": "shop01",
+    "title": "Vestido Clasico",
+    "description": "Vestido Clasico para ocasiones especiales",
+    "category": "Ropa",
+    "price": 2750,
+    "stock": 6
   },
   {
-      "id": 10102,
-      "code": "shop02",
-      "title": "abrigo Dark",
-      "description": "Para ocasiones de clima frio",
-      "category": "Ropa",
-      "price": 3250,
-      "stock": 4
+    "id": 10102,
+    "code": "shop02",
+    "title": "abrigo Dark",
+    "description": "Para ocasiones de clima frio",
+    "category": "Ropa",
+    "price": 3250,
+    "stock": 4
   },
   {
-      "id": 10103,
-      "code": "shop03",
-      "title": "Pants confort",
-      "description": "Pantalon comodo para toda ocasión",
-      "category": "Ropa",
-      "price": 2750,
-      "stock": 6
+    "id": 10103,
+    "code": "shop03",
+    "title": "Pants confort",
+    "description": "Pantalon comodo para toda ocasión",
+    "category": "Ropa",
+    "price": 2750,
+    "stock": 6
   },
   {
-      "id": 10104,
-      "code": "shop04",
-      "title": "Tacon",
-      "description": "Zapatos de elgancia y glamour para ocasiones especiales",
-      "category": "Calzado",
-      "price": 2750,
-      "stock": 2
+    "id": 10104,
+    "code": "shop04",
+    "title": "Tacon",
+    "description": "Zapatos de elgancia y glamour para ocasiones especiales",
+    "category": "Calzado",
+    "price": 2750,
+    "stock": 2
   },
   {
-      "id": 10105,
-      "code": "shop05",
-      "title": "Sandalias",
-      "description": "Zapatos comodos que combina todo tipo de ropa",
-      "category": "Calzado",
-      "price": 2500,
-      "stock": 4
+    "id": 10105,
+    "code": "shop05",
+    "title": "Sandalias",
+    "description": "Zapatos comodos que combina todo tipo de ropa",
+    "category": "Calzado",
+    "price": 2500,
+    "stock": 4
   },
   {
-      "id": 10106,
-      "code": "shop06",
-      "title": "Accesorios",
-      "description": "Lujo, decoro y altura atuendo para todo tipo de vestuario",
-      "category": "Accesories",
-      "price": 3450,
-      "stock": 6
+    "id": 10106,
+    "code": "shop06",
+    "title": "Accesorios",
+    "description": "Lujo, decoro y altura atuendo para todo tipo de vestuario",
+    "category": "Accesories",
+    "price": 3450,
+    "stock": 6
+  },
+  {
+    "id": 1738288250241,
+    "title": "Vestido Nuevo",
+    "description": "Vestido nuevo creado en postman",
+    "code": "shop07",
+    "price": 5000,
+    "stock": 2,
+    "category": "Ropa",
+    "status": true
   }
 ]

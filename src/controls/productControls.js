@@ -1,8 +1,8 @@
- // src/controls/productControls.js
+
 import fs from 'fs';
 import path from 'path';
 
-const filePath = path.join(process.cwd(), 'src', 'data', 'products.json');  // Aseguramos la ruta de los productos
+const filePath = path.join(process.cwd(), 'src', 'data', 'products.json');  
 
 // Obtener todos los productos
 export const getProducts = (req, res) => {
@@ -128,7 +128,7 @@ export const deleteProduct = (req, res) => {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
 
-    products.splice(index, 1);  // Eliminar el producto
+    products.splice(index, 1);
 
     fs.writeFile(filePath, JSON.stringify(products, null, 2), (err) => {
       if (err) {

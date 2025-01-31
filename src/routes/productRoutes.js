@@ -4,19 +4,10 @@ import { getProducts, getProductById, addProduct, updateProduct, deleteProduct }
 
 const router = express.Router();
 
-// Obtener todos los productos
 router.get('/', getProducts);
-
-// Obtener un producto por ID
 router.get('/:pid', getProductById);
-
-// Agregar un nuevo producto
 router.post('/', addProduct);
-
-// Actualizar un producto
 router.put('/:pid', updateProduct);
-
-// Eliminar un producto
 router.delete('/:pid', deleteProduct);
 
 export default router;
