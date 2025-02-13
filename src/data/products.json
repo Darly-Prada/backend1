@@ -11,7 +11,7 @@
   {
     "id": 10102,
     "code": "shop02",
-    "title": "abrigo Dark",
+    "title": "Abrigo Dark",
     "description": "Para ocasiones de clima frio",
     "category": "Ropa",
     "price": 3250,
@@ -54,13 +54,35 @@
     "stock": 6
   },
   {
-    "id": 1738288250241,
-    "title": "Vestido Nuevo",
-    "description": "Vestido nuevo creado en postman",
+    "title": "Tacon",
+    "price": 2340,
+    "description": "elgancia y glamour para ocasiones especiales",
+    "category": "Calzado",
     "code": "shop07",
-    "price": 5000,
-    "stock": 2,
+    "stock": 2
+  },
+  {
+    "title": "Chamarra ",
+    "price": 2400,
+    "description": "Abrigo para el frio ",
     "category": "Ropa",
-    "status": true
+    "code": "shop10",
+    "stock": 4
+  },
+  {
+    "title": "pantalon Jean ",
+    "price": 2424,
+    "description": "comodidad especial",
+    "category": "Ropa",
+    "code": "shop11",
+    "stock": 2
+  },
+  {
+    "title": "Collar Plata ",
+    "price": 2450,
+    "description": "Lujo y elegancia al vestir ",
+    "category": "Accesorios",
+    "code": "shop08",
+    "stock": 2
   }
 ]

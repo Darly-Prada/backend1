@@ -2,18 +2,20 @@
 import fs from 'fs';
 import path from 'path';
 
-const filePath = path.join(process.cwd(), 'src', 'data', 'cart.json');  // Ruta del archivo de carritos
-const productFilePath = path.join(process.cwd(), 'src', 'data', 'products.json');  // Ruta del archivo de productos
+const filePath = path.join(process.cwd(), 'src', 'data', 'cart.json');   
+const productFilePath = path.join(process.cwd(), 'src', 'data', 'products.json');  
 
 // Crear un nuevo carrito
 export const createCart = (req, res) => {
+  const { products } = req.body; 
+
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) return res.status(500).json({ message: 'Error leyendo los carritos' });
 
     let carts = JSON.parse(data);
     const newCart = {
       id: Date.now(),  // ID único generado
-      products: [],
+      products: products || [],
     };
 
     carts.push(newCart);
@@ -67,8 +69,7 @@ export const addProductToCart = (req, res) => {
       } else {
         cart.products.push({ id: pid, quantity: 1 });
       }
-      
-
+    
       fs.writeFile(filePath, JSON.stringify(carts, null, 2), (err) => {
         if (err) return res.status(500).json({ message: 'Error al actualizar el carrito' });
         res.status(200).json(cart);

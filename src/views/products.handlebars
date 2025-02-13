@@ -1,0 +1,15 @@
+
+<div id="productContainer">
+  {{#each products}}
+    <div class="product">     
+      <h2>{{this.title}}</h2>
+      <p>{{this.description}}</p>
+      <h4>{{this.price}}</h4>
+      <p>{{this.code}}</p>
+
+      <button>Agregar</button>
+      <hr/>
+    </div>
+  {{/each}}
+</div>
+<script src="/static/js/products.js"></script>

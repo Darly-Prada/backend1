@@ -4,14 +4,18 @@ import path from 'path';
 
 const filePath = path.join(process.cwd(), 'src', 'data', 'products.json');  
 
-// Obtener todos los productos
+// Obtener todos los productos y uso limit 
 export const getProducts = (req, res) => {
+  const { limit } = req.query; 
+
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
       return res.status(500).json({ message: 'Error al leer los productos' });
     }
     const products = JSON.parse(data);
-    res.status(200).json(products);
+      const limitProducts =  limit ? products.slice(0, parseInt(limit)): products;
+
+    res.status(200).json(limitProducts);
   });
 };
 
