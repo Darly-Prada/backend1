@@ -56,5 +56,3 @@ webSocketServer.on('connection', (socket) => {
     console.log('Cliente desconectado');
   });
 });
-
-

@@ -1,5 +1,5 @@
 <h1>Lista de Productos</h1>
-
+<div class="container"> 
 <form id="productForm">
   <input type="text" id="productTitle" placeholder="Nombre del producto" required>
   <input type="number" id="productPrice" placeholder="Precio" required>
@@ -19,5 +19,6 @@
     </li>
   {{/each}}
 </ul>
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/home.js"></script>
