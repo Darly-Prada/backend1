@@ -1,144 +1,86 @@
+import { ProductModel } from "../models/productModel.js";  
 
-import fs from 'fs';
-import path from 'path';
 
-const filePath = path.join(process.cwd(), 'src', 'data', 'products.json');  
+// Obtener todos los productos
+export const getProducts = async (req, res) => {
+  try {
+    const { limit } = req.query;  // Obtener parámetro de query (limit)
 
-// Obtener todos los productos y uso limit 
-export const getProducts = (req, res) => {
-  const { limit } = req.query; 
-
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error al leer los productos' });
-    }
-    const products = JSON.parse(data);
-      const limitProducts =  limit ? products.slice(0, parseInt(limit)): products;
-
-    res.status(200).json(limitProducts);
-  });
+    // Si hay límite, se aplica, si no, se obtienen todos
+    const products = limit ? await ProductModel.find().limit(parseInt(limit)) : await ProductModel.find(); 
+    
+    res.status(200).json(products);  // Enviar los productos como respuesta
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener los productos', error: error.message });
+  }
 };
 
 // Obtener un producto por ID
-export const getProductById = (req, res) => {
-  const { pid } = req.params;
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error al leer los productos' });
-    }
-    const products = JSON.parse(data);
-    const product = products.find(p => p.id == pid);
+export const getProductById = async (req, res) => {
+  const { pid } = req.params;  // Obtener el ID desde los parámetros de la URL
+
+  try {
+    const product = await ProductModel.findById(pid);  // Buscar el producto por su ID
+
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
-    res.status(200).json(product);
-  });
+
+    res.status(200).json(product);  // Enviar el producto encontrado
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener el producto', error: error.message });
+  }
 };
 
 // Agregar un nuevo producto
-export const addProduct = (req, res) => {
-  const { title, description, code, price, stock, category } = req.body;
+export const addProduct = async (req, res) => {
+  const { title, description, price, stock, category } = req.body;  // Obtener datos del cuerpo de la solicitud
 
-  if (!title || !description || !code || !price || !stock || !category) {
+  if (!title || !description || !price || !stock || !category) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
   }
 
-  const newProduct = {
-    id: Date.now(),  // Generar un ID único
-    title,
-    description,
-    code,
-    price,
-    stock,
-    category,
-    status: true,
-  };
+  try {
+    const newProduct = new ProductModel({ title, description, price, stock, category, status: true });
+    const savedProduct = await newProduct.save();  // Guardar el nuevo producto en la base de datos
 
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error al leer los productos' });
-    }
-
-    const products = JSON.parse(data);
-    const existProduct = products.find(p => p.id === newProduct.id);
-
-    if (existProduct) {
-      return res.status(400).json({ message: 'El ID del producto ya existe.' });
-    }
-
-    products.push(newProduct);
-
-    fs.writeFile(filePath, JSON.stringify(products, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ message: 'Error al guardar el producto' });
-      }
-      res.status(201).json(newProduct);
-    });
-  });
+    res.status(201).json(savedProduct);  // Enviar el producto guardado como respuesta
+  } catch (error) {
+    res.status(500).json({ message: 'Error al agregar el producto', error: error.message });
+  }
 };
 
 // Actualizar un producto
-export const updateProduct = (req, res) => {
-  const { pid } = req.params;
-  const { title, description, code, price, stock, category, status } = req.body;
+export const updateProduct = async (req, res) => {
+  const { pid } = req.params;  // Obtener el ID desde los parámetros
+  const { title, description, price, stock, category, status } = req.body;  // Obtener los datos para actualizar
 
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error al leer los productos' });
-    }
-
-    const products = JSON.parse(data);
-    const index = products.findIndex(p => p.id == pid);
-
-    if (index === -1) {
+  try {
+    const updatedProduct = await ProductModel.findByIdAndUpdate(pid, { title, description, price, stock, category, status }, { new: true });
+    
+    if (!updatedProduct) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
 
-    const updatedProduct = {
-      ...products[index],  // Copiar los valores actuales
-      title, 
-      description, 
-      code, 
-      price, 
-      stock, 
-      category, 
-      status: status === undefined ? true : status, // Usar true como valor por defecto
-    };
-
-    products[index] = updatedProduct;
-
-    fs.writeFile(filePath, JSON.stringify(products, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ message: 'Error al guardar la actualización' });
-      }
-      res.status(200).json(updatedProduct);
-    });
-  });
+    res.status(200).json(updatedProduct);  // Enviar el producto actualizado como respuesta
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+  }
 };
 
 // Eliminar un producto
-export const deleteProduct = (req, res) => {
-  const { pid } = req.params;
+export const deleteProduct = async (req, res) => {
+  const { pid } = req.params;  // Obtener el ID del producto a eliminar
 
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error al leer los productos' });
-    }
+  try {
+    const deletedProduct = await ProductModel.findByIdAndDelete(pid);  // Eliminar el producto por su ID
 
-    const products = JSON.parse(data);
-    const index = products.findIndex(p => p.id == pid);
-
-    if (index === -1) {
+    if (!deletedProduct) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
 
-    products.splice(index, 1);
-
-    fs.writeFile(filePath, JSON.stringify(products, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ message: 'Error al eliminar el producto' });
-      }
-      res.status(200).json({ message: 'Producto eliminado correctamente' });
-    });
-  });
+    res.status(200).json({ message: 'Producto eliminado correctamente' });  // Confirmar la eliminación
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar el producto', error: error.message });
+  }
 };

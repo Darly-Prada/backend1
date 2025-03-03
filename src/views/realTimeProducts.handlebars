@@ -20,5 +20,11 @@
   {{/each}}
 </ul>
 
+ <ul id="cart-list">
+    {{#each carts}}
+      <li>Carrito ID: {{this._id}} - Productos: {{this.products.length}}</li>
+    {{/each}}
+  </ul>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/home.js"></script>

@@ -12,4 +12,16 @@
     </div>
   {{/each}}
 </div>
+
+<div>
+<ul id="cart-list">
+    {{#each carts}}
+      <li class="list"> 
+        {{this._id}} - {{this.products.length}}
+      </li>
+    {{/each}}
+</ul>
+
+
+</div>
 <script src="/static/js/products.js"></script>

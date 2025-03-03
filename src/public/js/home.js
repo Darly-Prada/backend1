@@ -1,6 +1,7 @@
-const socketClient = io(); 
 
+const socket = io(); // Conexión con el servidor WebSocket
 
+// Referencias a los elementos del DOM
 const productForm = document.getElementById('productForm');
 const productTitle = document.getElementById('productTitle');
 const productPrice = document.getElementById('productPrice');
@@ -11,39 +12,113 @@ const productStock = document.getElementById('productStock');
 const productList = document.getElementById('productList');
 
 // Agregar un nuevo producto
-productForm.addEventListener('submit', (event) => {
-  event.preventDefault(); 
+productForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
+  // Captura de los valores del formulario
   const newProduct = {
     title: productTitle.value,
-    price: parseInt(productPrice.value),
+    price: productPrice.value,
     description: productDescription.value,
     category: productCategory.value,
     code: productCode.value,
-    stock: parseInt(productStock.value)
+    stock: productStock.value,
   };
-  socketClient.emit('addProduct', newProduct);
+
+  // Emitir evento al servidor para agregar producto
+  socket.emit('addProduct', newProduct);
+
+  // Limpiar formulario después de enviar
   productForm.reset();
 });
 
-socketClient.on('updateProducts', (products) => {
+// Escuchar eventos para actualizar la lista de productos
+socket.on('updateProducts', (products) => {
+  // Limpiar la lista actual de productos
   productList.innerHTML = '';
 
-  // Agregar al DOM
-  products.forEach((product, index) => {
-    const productItem = document.createElement('li');
-    productItem.innerHTML = `
+  // Crear y agregar los nuevos productos a la lista
+  products.forEach(product => {
+    const li = document.createElement('li');
+    li.id = `product-${product._id}`;
+    li.innerHTML = `
       ${product.title} - $${product.price} - ${product.description} - ${product.category} - ${product.code} - ${product.stock}
-      <button class="deleteBtn" data-index="${index}">Eliminar</button>
+      <button class="deleteBtn" data-id="${product._id}">Eliminar</button>
     `;
-    productList.appendChild(productItem);
+    productList.appendChild(li);
   });
 
+  // Añadir los eventos para eliminar productos
   const deleteButtons = document.querySelectorAll('.deleteBtn');
-  deleteButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const index = button.getAttribute('data-index');
-      socketClient.emit('deleteProduct', index);
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const productId = e.target.dataset.id;
+      socket.emit('deleteProduct', productId); // Emitir evento de eliminación
     });
   });
 });
+
+// Escuchar cuando el servidor emita que el producto fue eliminado
+socket.on('productDeleted', (productId) => {
+  const productElement = document.getElementById(`product-${productId}`);
+  if (productElement) {
+    productElement.remove();
+  }
+});
+
+// Al agregar producto al carrito
+document.querySelectorAll('.addToCartBtn').forEach(btn => {
+  btn.addEventListener('click', async (e) => {
+    const productId = e.target.dataset.id;
+    const cartId = 'ID_DEL_CARRITO'; // Aquí puedes poner un ID dinámico de un carrito existente.
+
+    // Agregar producto al carrito a través de la API
+    await fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: 'POST',
+    });
+
+    // Emitir un evento a través del WebSocket para actualizar la vista
+    socket.emit('updateCart', cartId);
+  });
+});
+
+// Escuchar el evento de actualización del carrito
+socket.on('cartUpdated', (cart) => {
+  const cartList = document.getElementById('cartList');
+  cartList.innerHTML = '';
+
+  cart.products.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.productId.title} - ${item.quantity}`;
+    cartList.appendChild(li);
+  });
+});
+// Evento para eliminar un producto
+const deleteBtns = document.querySelectorAll(".deleteBtn");
+
+deleteBtns.forEach(button => {
+  button.addEventListener("click", async () => {
+    const productId = button.dataset.id;
+    const cartId = "idDelCarrito";  // Asegúrate de tener el ID del carrito correcto, por ejemplo, lo puedes obtener de la URL o tenerlo previamente
+
+    const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert("Producto eliminado exitosamente!");
+      location.reload();  // Recargar la página para mostrar el carrito actualizado
+    } else {
+      alert("Error al eliminar el producto");
+    }
+  });
+});
+
+// Escuchar eventos y actualizar la vista si es necesario
+socket.on("updateCart", (cart) => {
+  // Actualiza la lista de productos en el carrito
+  console.log("Carrito actualizado:", cart);
+  location.reload();  // Recargar para reflejar los cambios
+});
+

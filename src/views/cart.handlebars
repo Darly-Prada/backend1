@@ -1,0 +1,25 @@
+
+</head>
+<body>
+  <h1>Carrito de Compras</h1>
+  
+ 
+</body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('updateCarts', (carts) => {
+      // Actualizar la lista de carritos en la interfaz
+      const cartList = document.getElementById('cart-list');
+      cartList.innerHTML = '';
+
+      carts.forEach(cart => {
+        const li = document.createElement('li');
+        li.textContent = `Carrito ID: ${cart._id} - Productos: ${cart.products.length}`;
+        cartList.appendChild(li);
+      });
+    });
+  </script>
+</html>

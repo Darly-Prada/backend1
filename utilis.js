@@ -1,4 +1,3 @@
-
 import multer from "multer";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -8,12 +7,11 @@ export const __dirname = dirname(__filename)
 
 const config = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, __dirname + '/public/image')
+        cb(null, __dirname + '/public/img');  
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
-    }
+    },
 })
-
-export const upload = multer({ storage: config })
+export const uploader = multer({ storage: config })
 
