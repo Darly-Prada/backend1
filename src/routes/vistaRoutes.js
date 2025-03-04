@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { ProductModel } from "../models/productModel.js";  
+import { productModel } from "../models/productModel.js";  
 const route = Router();
 
 route.get("/", async (req, res) => {
   try {
     // Obtener los productos desde MongoDB usando Mongoose
-    const productos = await ProductModel.find();  // Obtener todos los productos desde MongoDB
+    const productos = await productModel.find();  // Obtener todos los productos desde MongoDB
 
     // Renderizar la vista con los productos
     res.render("home", { products: productos });

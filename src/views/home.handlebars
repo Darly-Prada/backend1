@@ -17,22 +17,26 @@
     {{#each products}}
       <li id="product-{{this._id}}">
         {{this.title}} - ${{this.price}} - {{this.description}} - {{this.category}} - {{this.code}} - {{this.stock}}
-        <button class="deleteBtn" data-id="{{this._id}}">Eliminar</button>
+          <button class="deleteBtn" data-id="{{this._id}}">Eliminar</button>
+          <button class="addToCartBtn" data-id="{{this._id}}">Agregar al carrito</button>
       </li>
+      
     {{/each}}
   </ul>
-</div>
+ 
+  </div>
 
-<div> 
+<div class="cartContainer"> 
   <!-- Carrito -->
-  <h2>Tu Carrito</h2>
-  <ul id="cart-list">
+  <h2 class="cartH2">Tu Carrito</h2>
+  <ul id="cartList">
     {{#each cart.products}}
       <li class="list">
-        {{this.productId.title}} - {{this.quantity}}
+        {{this.productId}} -{{this.precio}} - {{this.quantity}}
       </li>
     {{/each}}
   </ul>
+  <button class="Boton" data-id="{{this._id}}">Comprar mis Productos</button>
 </div>
 
 <!-- Script del WebSocket -->

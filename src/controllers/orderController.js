@@ -1,4 +1,4 @@
-import OrderModel from '../models/orderModel.js';
+import { orderModel } from '../models/orderModel.js';
 import CartModel from '../models/cartModel.js';
 
 export const createOrder = async (req, res) => {
@@ -10,17 +10,13 @@ export const createOrder = async (req, res) => {
     if (!cart) return res.status(404).json({ message: 'Carrito no encontrado' });
 
     // Crear una nueva orden
-    const newOrder = new OrderModel({
+    const newOrder = new orderModel({
       cartId: cart._id,
       customer,
       products: cart.products,
       status: 'pending'
     });
-
-    // Guardar la orden
-    await newOrder.save();
-
-    // Opcionalmente, vaciar el carrito (si se desea)
+    await newOrder.save();    
     await CartModel.findByIdAndDelete(cartId);
 
     res.status(201).json({ message: 'Orden creada con éxito', order: newOrder });

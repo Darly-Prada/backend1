@@ -1,7 +1,8 @@
 import express from 'express';
+
 import { getProducts, getProductById, addProduct, updateProduct, deleteProduct } from '../controllers/productController.js';
 import { __dirname,uploader } from '../../utilis.js';
-import { ProductModel } from '../models/productModel.js';
+import { productModel } from '../models/productModel.js';
 
 const route = express.Router();
 
@@ -11,23 +12,19 @@ route.post('/', addProduct);
 route.put('/:pid', updateProduct);
 route.delete('/:pid', deleteProduct);
 
-route.post("/",// uploader.single("file"),
-        async (req, res) => {
+
+route.post("/", async (req, res) => {
     try {
-       //  if(!req.file) return res.status(400).json({ message: "No se ha subido la imagen." });        
         const prod = req.body;
         console.log("Datos recibidos:", prod);
-        // Crear el producto
-        const respuesta = await ProductModel.create({...prod,// thumbnail: req.file.path.split("public")[1]
-        });
-    // console.log("Producto creado:", respuesta);  // Muestra la respuesta que devuelve Mongoose
+       const respuesta = await productModel.create({...prod });
         res.status(201).json({payload:respuesta})
         return res.json({
             mensaje: "Producto guardado correctamente",
             payload: respuesta
         });
     } catch (error) {
-        console.error("Error al guardar producto:", error);  // Mostrar el error en consola
+        console.error("Error al guardar producto:", error);   
         return res.status(500).json({
             mensaje: "Error al guardar producto",
             error: error.message
@@ -37,8 +34,8 @@ route.post("/",// uploader.single("file"),
     // Leer todos los productos 
 route.get("/", async (req, res) => {
     try {
-        const respuesta = await ProductModel.find(); 
-        res.json({ mensaje: "Productos obtenidos correctamente", payload: respuesta });
+        const respuesta = await productModel.find(); 
+        res.json({respuesta });
     } catch (error) {
         console.error("Error al obtener productos:", error);
         res.status(500).json({ mensaje: "Error al obtener productos", error: error.message });
@@ -48,7 +45,7 @@ route.get("/", async (req, res) => {
 route.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const producto = await ProductModel.findById(id); 
+        const producto = await productModel.findById(id); 
         if (!producto) {
             return res.status(404).json({ mensaje: "Producto no encontrado" });
         }
@@ -63,7 +60,7 @@ route.put("/:id", async (req, res) => {
     try {
         const { id } = req.params;  
         const body = req.body;  
-        const productoActualizado = await ProductModel.findByIdAndUpdate(id, body, { new: true });
+        const productoActualizado = await productModel.findByIdAndUpdate(id, body, { new: true });
         if (!productoActualizado) {
             return res.status(404).json({ mensaje: "Producto no encontrado para actualizar" });
         }
@@ -77,7 +74,7 @@ route.put("/:id", async (req, res) => {
 route.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params; 
-        const productoEliminado = await ProductModel.findByIdAndDelete(id);
+        const productoEliminado = await productModel.findByIdAndDelete(id);
         if (!productoEliminado) {
             return res.status(404).json({ mensaje: "Producto no encontrado para eliminar" });
         }

@@ -1,17 +1,20 @@
-import mongoose from 'mongoose';
+import { model, Schema } from 'mongoose';
+import mongoosePaginatev2 from "mongoose-paginate-v2";
 
-const orderSchema = new mongoose.Schema({
-  cartId: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart' },
-  customer: String,
-  products: [
-    {
-      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-      quantity: Number,
-      price: Number
-    }
-  ],
-  status: { type: String, default: 'pending' }
-});
+const orderCollection ="Ordenes"
 
-const OrderModel = mongoose.model('Order', orderSchema);
-export default OrderModel;
+const orderSchema = new  Schema({
+  precio:Number, 
+  cantidad:Number,
+  talle: {
+    type:String,
+    enum:["s", "m", "l", "xl"],
+    default: "m"
+  },
+  descripcion:String
+})
+
+
+orderSchema.plugin(mongoosePaginatev2)
+
+export const orderModel = model(orderCollection, orderSchema);

@@ -5,6 +5,7 @@ import cartRoutes from "./src/routes/cartRoutes.js";
 import orderRoutes from "./src/routes/orderRoutes.js";  // Nueva ruta para órdenes
 import handlebars, { engine } from "express-handlebars";
 import vistaRoutes from "./src/routes/vistaRoutes.js";
+import { orderModel } from './src/models/orderModel.js';
 import { Server } from "socket.io";
 import handleWebSocket from "./src/connection/webSocket.js";
 
@@ -30,10 +31,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas
+//app.get('/', (req, res) => {res.send('¡Bienvenido a raíz principal!');});
 app.use('/api/products', productRoutes); 
 app.use('/api/carts', cartRoutes);  
-app.use('/api/orders', orderRoutes);  // Nueva ruta para órdenes
-app.use('/', vistaRoutes); // Rutas de vistas
+app.use('/api/orders', orderRoutes);   
+app.use('/', vistaRoutes);  
 
 // Conexión a MongoDB y WebSocket
 mongoConnection();  

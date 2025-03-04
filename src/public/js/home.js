@@ -115,10 +115,27 @@ deleteBtns.forEach(button => {
   });
 });
 
-// Escuchar eventos y actualizar la vista si es necesario
-socket.on("updateCart", (cart) => {
-  // Actualiza la lista de productos en el carrito
-  console.log("Carrito actualizado:", cart);
-  location.reload();  // Recargar para reflejar los cambios
+const addToCartButtons = document.querySelectorAll('.addToCartBtn');
+
+addToCartButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    const productId = this.getAttribute('data-id');  // Obtener el id del producto
+    // Emitir el evento para agregar el producto al carrito
+    socket.emit('addToCart', productId);
+  });
+});
+
+// Escuchar los productos actualizados en el carrito
+socket.on('updateCart', (updatedCart) => {
+  const cartList = document.getElementById('cartList');
+  cartList.innerHTML = '';  // Limpiar la lista del carrito
+
+  updatedCart.products.forEach(item => {
+    const listItem = document.createElement('li');
+    listItem.className = 'list';
+    listItem.innerHTML = `${item.productId.title} - ${item.quantity}`;
+    
+    cartList.appendChild(listItem);
+  });
 });
 
