@@ -99,6 +99,7 @@ h1:hover {
     margin: 1rem ;
   }
 
+
  .cartContainer{
   width: 80%;
   height: 25vh;
@@ -121,19 +122,24 @@ h1:hover {
   font-weight: bold;
 
  }
-
-
-
-  button {
-    padding: 15px 10px;
+ .btn{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  gap:10px
+}
+.btn button {
+    width: 45%;
+    display: flex;
+    padding: 8px 16px;
     background-color: #8a2be2; 
     border-radius: 8px;
-    padding: 8px;
     color: #5d0303;
     font-weight: bold;
     cursor: pointer;
   }
-    button:hover {
+  .btn button:hover {
     background-color:transparent;
     border:solid 1px #5d0303;
   }
@@ -146,8 +152,8 @@ h1:hover {
     border: #5d0303;
 
   }
-  
-  .deleteBtn {
+  /*
+  .deleteBtn .agregar {
     background-color:#8a2be2; 
     margin: 8px;
     color: #5d0303;
@@ -158,6 +164,7 @@ h1:hover {
     background-color:transparent;
     border:solid 1px #5d0303;
   }
+    */
 .navbar{
    width: 100%;
   display: flex;

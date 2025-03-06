@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 import mongoosePaginatev2 from "mongoose-paginate-v2";
 
- 
+
 const productCollection = "Products Shop"
 const productSchema = new Schema({
 
@@ -12,7 +12,10 @@ const productSchema = new Schema({
         type: String,
         unique: true
     },
-    price: Number,
+    price:{
+        type:Number,
+        require: true
+    },
     stock:{ 
         type: Number, 
         require: true 
@@ -23,5 +26,6 @@ const productSchema = new Schema({
 productSchema.plugin(mongoosePaginatev2)
 
 export const productModel = model (productCollection, productSchema)
- 
+
+
  

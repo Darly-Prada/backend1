@@ -19,11 +19,12 @@
     </li>
   {{/each}}
 </ul>
-
+  
  <ul id="cart-list">
     {{#each carts}}
       <li>Carrito ID: {{this._id}} - Productos: {{this.products.length}}</li>
-        {{/each}}
+    
+    {{/each}}
   </ul>
 
 <script src="/socket.io/socket.io.js"></script>

@@ -7,16 +7,18 @@ const cartSchema = new Schema({
     {
       productId: {
         type: Schema.Types.ObjectId,
-        ref: 'Product',  // Asegúrate de que 'Product' exista en tu base de datos
+        ref: "Products Shop",   // Asegúrate de que "Products Shop" sea el nombre correcto del modelo de productos
         required: true
       },
-      quantity: {
+      quantity: { 
         type: Number,
         required: true,
-        min: 1
+        default: 0
       },
-      precio: Number,   
-      descripcion: String   
+      price: {   // Asegúrate de que se guarda el precio
+        type: Number,
+      },
+      description: String
     }
   ],
   total: {
@@ -25,15 +27,26 @@ const cartSchema = new Schema({
   }
 });
 
-// Método para calcular el total del carrito
+// Calcular el total del carrito
 cartSchema.methods.calculateTotal = function() {
   this.total = this.products.reduce((total, product) => {
-    return total + (product.precio * product.quantity);
+    const productPrice = product.price || 0;
+    const productQuantity = product.quantity || 0;
+    console.log(`Producto: ${product.productId}, Price: ${productPrice}, Quantity: ${productQuantity}`);
+    return total + (productPrice * productQuantity);
   }, 0);
+
   return this.total;
 };
 
-export const cartModel = model(cartCollection, cartSchema);
+export const cartModel = model(cartCollection, cartSchema); 
+
+
+
+
+
+
+
 
 
 

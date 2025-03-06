@@ -1,7 +1,6 @@
-
 <h1>Lista de Productos</h1>
-<div class="container"> 
-    <!-- Formulario para agregar producto -->
+<div class="container">
+  <!-- Formulario para agregar producto -->
   <form id="productForm">
     <input type="text" id="productTitle" placeholder="Nombre del producto" required>
     <input type="number" id="productPrice" placeholder="Precio" required>
@@ -11,34 +10,38 @@
     <input type="number" id="productStock" placeholder="Stock" required>
     <button type="submit">Agregar Producto</button>
   </form>
-
-  <!-- Lista de productos -->
+<!-- Lista de productos -->
   <ul id="productList">
     {{#each products}}
       <li id="product-{{this._id}}">
         {{this.title}} - ${{this.price}} - {{this.description}} - {{this.category}} - {{this.code}} - {{this.stock}}
-          <button class="deleteBtn" data-id="{{this._id}}">Eliminar</button>
-          <button class="addToCartBtn" data-id="{{this._id}}">Agregar al carrito</button>
+        <button class="deleteBtn" data-id="{{this._id}}">Eliminar</button>
+        <button class="addToCartBtn" data-id="{{this._id}}">Agregar al carrito</button>
       </li>
-      
     {{/each}}
   </ul>
- 
-  </div>
-
-<div class="cartContainer"> 
-  <!-- Carrito -->
+</div>
+<!-- carrito de Compras -->
+<div class="cartContainer">
   <h2 class="cartH2">Tu Carrito</h2>
   <ul id="cartList">
     {{#each cart.products}}
       <li class="list">
-        {{this.productId}} -{{this.precio}} - {{this.quantity}}
+        {{this.productId.title}} - {{this.quantity}} - <button class="removeFromCartBtn" data-id="{{this.productId._id}}"> Eliminar</button>
       </li>
     {{/each}}
   </ul>
-  <button class="Boton" data-id="{{this._id}}">Comprar mis Productos</button>
+  
+  <!-- Botón para vaciar el carrito -->
+  <button class="emptyCartBtn">Vaciar Carrito</button>
+  
+  <!-- Botón para comprar productos -->
+  <button class="buyButton">Comprar mis Productos</button>
 </div>
 
-<!-- Script del WebSocket -->
+
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/home.js"></script>
+
+

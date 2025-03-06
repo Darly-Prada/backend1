@@ -6,17 +6,10 @@ import { productModel } from '../models/productModel.js';
 
 const route = express.Router();
 
-route.get('/', getProducts);
-route.get('/:pid', getProductById);
-route.post('/', addProduct);
-route.put('/:pid', updateProduct);
-route.delete('/:pid', deleteProduct);
-
 
 route.post("/", async (req, res) => {
     try {
         const prod = req.body;
-        console.log("Datos recibidos:", prod);
        const respuesta = await productModel.create({...prod });
         res.status(201).json({payload:respuesta})
         return res.json({

@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { productModel } from "../models/productModel.js";  
+
 const route = Router();
 
+// Ruta para mostrar productos en la vista
 route.get("/", async (req, res) => {
   try {
     // Obtener los productos desde MongoDB usando Mongoose

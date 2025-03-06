@@ -14,7 +14,6 @@ const orderSchema = new  Schema({
   descripcion:String
 })
 
-
 orderSchema.plugin(mongoosePaginatev2)
 
 export const orderModel = model(orderCollection, orderSchema);
