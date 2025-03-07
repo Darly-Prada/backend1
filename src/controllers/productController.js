@@ -1,11 +1,11 @@
 import { productModel } from "../models/productModel.js";
 
-// Obtener todos los productos con paginación y filtros
+
+// Get de todos los productos con paginación 
 export const getProducts = async (req, res) => {
   try {
     const { limit = 10, page = 1, sort = 'asc', query } = req.query;
     const sortOrder = sort === "desc" ? -1 : 1;
-
     let filter = {};
     if (query) {
       filter = {
@@ -15,13 +15,11 @@ export const getProducts = async (req, res) => {
         ]
       };
     }
-
     const result = await productModel.paginate(filter, {
       limit: parseInt(limit),
       page: parseInt(page),
       sort: { price: sortOrder }
     });
-
     res.status(200).json({
       status: "success",
       payload: result.docs,
@@ -38,7 +36,6 @@ export const getProducts = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener los productos', error: error.message });
   }
 };
-
 // Obtener un producto por ID
 export const getProductById = async (req, res) => {
   try {
@@ -51,23 +48,30 @@ export const getProductById = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener el producto', error: error.message });
   }
 };
-
 // Agregar un nuevo producto
-export const addProduct = async (req, res) => {
+
+export const addProduct = (req, res) => {
+ // console.log('Cuerpo de la solicitud:', req.body);
   const { title, description, price, stock, category } = req.body;
   if (!title || !description || !price || !stock || !category) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
   }
 
-  try {
-    const newProduct = new productModel({ title, description, price, stock, category, status: true });
-    const savedProduct = await newProduct.save();
-    res.status(201).json(savedProduct);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al agregar el producto', error: error.message });
-  }
-};
+  // Crear un nuevo producto
+  const newProduct = new productModel({title, description, price, stock, category,
+    status: true, 
+  });
 
+  // Guardar producto en base de datos
+  newProduct.save()
+    .then(savedProduct => {
+      res.status(201).json(savedProduct);
+    })
+    .catch(error => {
+     // console.error('Error al guardar producto:', error);
+      res.status(500).json({ message: 'Error al agregar el producto', error: error.message });
+    });
+};
 // Actualizar un producto
 export const updateProduct = async (req, res) => {
   try {
@@ -80,7 +84,6 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
   }
 };
-
 // Eliminar un producto
 export const deleteProduct = async (req, res) => {
   try {
@@ -93,4 +96,3 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar el producto', error: error.message });
   }
 };
-

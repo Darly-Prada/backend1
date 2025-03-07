@@ -7,7 +7,7 @@ const cartSchema = new Schema({
     {
       productId: {
         type: Schema.Types.ObjectId,
-        ref: "Products Shop",   // Asegúrate de que "Products Shop" sea el nombre correcto del modelo de productos
+        ref: "Products Shop",  
         required: true
       },
       quantity: { 
@@ -15,7 +15,7 @@ const cartSchema = new Schema({
         required: true,
         default: 0
       },
-      price: {   // Asegúrate de que se guarda el precio
+      price: {   
         type: Number,
       },
       description: String
@@ -26,7 +26,6 @@ const cartSchema = new Schema({
     default: 0
   }
 });
-
 // Calcular el total del carrito
 cartSchema.methods.calculateTotal = function() {
   this.total = this.products.reduce((total, product) => {

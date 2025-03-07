@@ -24,44 +24,36 @@ const handleWebSocket = (io) => {
       }).catch(err => console.log('Error al agregar producto al carrito', err));
     });
 
-    // Escuchar evento para eliminar un producto específico del carrito
+    // Escuchar evento para eliminar un solo producto del carrito  
     socket.on('removeFromCart', (productId) => {
       console.log('Producto a eliminar del carrito:', productId);
       // Eliminar el producto del carrito
       cart.products = cart.products.filter(p => p.productId._id.toString() !== productId);
-      io.emit('cartUpdated', cart);  // Emitir carrito actualizado después de eliminar el producto
+      io.emit('cartUpdated', cart);  
     });
-
     // Escuchar evento para vaciar todo el carrito
     socket.on('emptyCart', () => {
       console.log('Vaciando el carrito');
       cart.products = [];
-      io.emit('cartUpdated', cart);  // Emitir carrito vacío
+      io.emit('cartUpdated', cart); 
     });
 
     // Escuchar evento para realizar la compra
     socket.on('buyProducts', () => {
       console.log('Procesando la compra...');
       
-      // Lógica para finalizar la compra (por ejemplo, guardar la orden)
-      // Aquí simplemente vaciamos el carrito como parte del proceso
       const purchasedProducts = cart.products.map(item => ({
         productId: item.productId._id,
         quantity: item.quantity
       }));
 
-      // Aquí podrías agregar lógica para guardar la orden en la base de datos, si es necesario
-
       // Vaciar el carrito después de la compra
       cart.products = [];
-      io.emit('cartUpdated', cart);  // Emitir carrito vacío después de la compra
-
-      // Emitir mensaje de éxito (opcional)
+      io.emit('cartUpdated', cart); 
       socket.emit('purchaseComplete', { message: 'Compra realizada con éxito' });
     });
 
-    // Escuchar evento para agregar un nuevo producto
-// Escuchar evento para agregar un nuevo producto
+  // Escucho el evento para agregar un nuevo producto
 socket.on('addProduct', (newProduct) => {
   console.log('Producto recibido para agregar:', newProduct);
 
@@ -74,8 +66,7 @@ socket.on('addProduct', (newProduct) => {
     })
     .catch(err => console.log('Error al guardar el producto', err));
 });
-
-    // Escuchar evento para eliminar un producto
+    // Escucho el evento para eliminar un producto
     socket.on('deleteProduct', (productId) => {
       console.log('Producto recibido para eliminar:', productId);
       productModel.findByIdAndDelete(productId)
@@ -86,7 +77,6 @@ socket.on('addProduct', (newProduct) => {
         })
         .catch(err => console.log('Error al eliminar producto', err));
     });
-
     socket.on('disconnect', () => {
       console.log('Cliente desconectado');
     });

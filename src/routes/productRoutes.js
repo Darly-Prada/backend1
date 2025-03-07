@@ -1,59 +1,55 @@
 import express from 'express';
-
-import { getProducts, getProductById, addProduct, updateProduct, deleteProduct } from '../controllers/productController.js';
-import { __dirname,uploader } from '../../utilis.js';
+import { getProducts, getProductById, addProduct, updateProduct, deleteProduct } from '../controllers/productController.js';  
+import { __dirname, uploader } from '../../utilis.js';
 import { productModel } from '../models/productModel.js';
+
 
 const route = express.Router();
 
+// route.get('/products', getProducts,getProductById,addProduct,updateProduct,deleteProduct);
 
+// Crear un nuevo producto
 route.post("/", async (req, res) => {
     try {
         const prod = req.body;
-       const respuesta = await productModel.create({...prod });
-        res.status(201).json({payload:respuesta})
-        return res.json({
-            mensaje: "Producto guardado correctamente",
-            payload: respuesta
-        });
+        const result = await productModel.create({ ...prod });
+        res.status(201).json({ mensaje: "Producto guardado correctamente", payload: result });
     } catch (error) {
-        console.error("Error al guardar producto:", error);   
-        return res.status(500).json({
-            mensaje: "Error al guardar producto",
-            error: error.message
-        });
+        // console.error("Error al guardar producto:", error);
+        res.status(500).json({ mensaje: "Error al guardar producto", error: error.message });
     }
 });
-    // Leer todos los productos 
+// Leer todos los productos con paginación
 route.get("/", async (req, res) => {
     try {
-        const respuesta = await productModel.find(); 
-        res.json({respuesta });
+        const respuesta = await getProducts(req, res); 
+        res.json({ respuesta });
     } catch (error) {
         console.error("Error al obtener productos:", error);
         res.status(500).json({ mensaje: "Error al obtener productos", error: error.message });
-    }  
+    }
 });
-// Leer un producto por su Id 
+
+// Leer un producto por su Id
 route.get("/:id", async (req, res) => {
+    const productId = req.params.id;
     try {
-        const { id } = req.params;
-        const producto = await productModel.findById(id); 
-        if (!producto) {
+        const product = await productModel.findById(productId);
+        if (!product) {
             return res.status(404).json({ mensaje: "Producto no encontrado" });
         }
-        res.json({ mensaje: "Producto encontrado", payload: producto });
+        res.status(200).json({ mensaje: "Producto encontrado", payload: product });
     } catch (error) {
-        console.error("Error al obtener producto:", error);
         res.status(500).json({ mensaje: "Error al obtener producto", error: error.message });
     }
 });
-// Actualizar producto Id  
+
+// Actualizar producto por Id
 route.put("/:id", async (req, res) => {
     try {
-        const { id } = req.params;  
-        const body = req.body;  
-        const productoActualizado = await productModel.findByIdAndUpdate(id, body, { new: true });
+        const { id } = req.params;
+        const body = req.body;
+        const productoActualizado = await updateProduct(id, body);
         if (!productoActualizado) {
             return res.status(404).json({ mensaje: "Producto no encontrado para actualizar" });
         }
@@ -65,16 +61,17 @@ route.put("/:id", async (req, res) => {
 });
 // Eliminar producto por Id
 route.delete("/:id", async (req, res) => {
+    const productId = req.params.id;
     try {
-        const { id } = req.params; 
-        const productoEliminado = await productModel.findByIdAndDelete(id);
-        if (!productoEliminado) {
-            return res.status(404).json({ mensaje: "Producto no encontrado para eliminar" });
+        const deletedProduct = await productModel.findByIdAndDelete(productId);
+        if (!deletedProduct) {
+            return res.status(404).json({ mensaje: "Producto no encontrado" });
         }
-        res.json({ mensaje: "Producto eliminado correctamente", payload: productoEliminado });
+        res.status(200).json({ mensaje: "Producto eliminado correctamente", payload: deletedProduct });
     } catch (error) {
-        console.error("Error al eliminar producto:", error);
         res.status(500).json({ mensaje: "Error al eliminar producto", error: error.message });
     }
 });
+
 export default route;
+

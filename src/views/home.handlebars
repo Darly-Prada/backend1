@@ -1,4 +1,22 @@
 <h1>Lista de Productos</h1>
+
+<!-- carrito de Compras -->
+<div class="cartContainer">
+  <h2 class="cartH2">Tu Carrito</h2>
+  <ul id="cartList">
+    {{#each cart.products}}
+      <li class="list">
+        {{this.productId.title}} - {{this.quantity}} - <button class="removeFromCartBtn" data-id="{{this.productId._id}}">Eliminar</button>
+      </li>
+    {{/each}}
+  </ul>
+  
+  <!-- Botón para vaciar el carrito -->
+  <button class="emptyCartBtn btn">Vaciar Carrito</button>
+  <!-- Botón para comprar productos -->
+  <button class="buyButton btn">Comprar mis Productos</button>
+</div>
+
 <div class="container">
   <!-- Formulario para agregar producto -->
   <form id="productForm">
@@ -20,26 +38,23 @@
       </li>
     {{/each}}
   </ul>
-</div>
-<!-- carrito de Compras -->
-<div class="cartContainer">
-  <h2 class="cartH2">Tu Carrito</h2>
-  <ul id="cartList">
-    {{#each cart.products}}
-      <li class="list">
-        {{this.productId.title}} - {{this.quantity}} - <button class="removeFromCartBtn" data-id="{{this.productId._id}}"> Eliminar</button>
-      </li>
-    {{/each}}
-  </ul>
-  
-  <!-- Botón para vaciar el carrito -->
-  <button class="emptyCartBtn">Vaciar Carrito</button>
-  
-  <!-- Botón para comprar productos -->
-  <button class="buyButton">Comprar mis Productos</button>
-</div>
+</div> 
 
-
+ 
+ <div class="pagination">
+    {{#if hasPrevPage}}
+        <a href="{{prevLink}}">Anterior</a>
+    {{else}}
+        <span>Anterior</span>
+    {{/if}}
+    <span>Página {{currentPage}} de {{totalPages}}</span>
+    {{#if hasNextPage}}
+        <a href="{{nextLink}}">Siguiente</a>
+    {{else}}
+        <span>Siguiente</span>
+    {{/if}}
+</div>
+ 
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/home.js"></script>

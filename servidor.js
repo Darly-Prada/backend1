@@ -31,6 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas
+
 app.use('/api/products', productRoutes); 
 app.use('/api/carts', cartRoutes);  
 app.use('/api/orders', orderRoutes);   
@@ -39,7 +40,6 @@ app.use('/', vistaRoutes);
 // Conexión a MongoDB y WebSocket
 mongoConnection();  
 ordersConnection(); 
-
 handleWebSocket(webSocketServer);  
 
 

@@ -13,8 +13,7 @@ export const mongoConnection = async () => {
     console.error("Error de conexión a MongoDB ShopFem:", error);
   }
 };
-
-// Conexión a la base de datos 'orders' para almacenar las órdenes
+// Conexión a la base de datos 'orders' para almacenar las órdenes en Desarrollo 
 export const ordersConnection = async () => {
 
   try{

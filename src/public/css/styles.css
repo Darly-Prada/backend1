@@ -49,10 +49,9 @@ h1:hover {
   }
 
   #productList{
-    
-    display: grid;
+        display: grid;
     justify-content: space-between;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 2fr));
     gap: 1rem;
     padding:1.5rem;
     margin: 1px;
@@ -93,19 +92,22 @@ h1:hover {
   }
   .container{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
+    align-items:first baseline;
     flex-direction: row;
-    margin: 1rem ;
+    margin: 1rem auto ;
+    padding:12px 2rem;
   }
 
 
  .cartContainer{
-  width: 80%;
-  height: 25vh;
+  width: 60%;
+  height: max-content;
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
+  gap: 1rem;
   margin: 12px auto;
+  padding: 12px;
   justify-content: center;
   align-items: center;
   border: solid 1px gray;
@@ -127,12 +129,36 @@ h1:hover {
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  gap:10px
+  border-radius: 5px;
+  gap:10px;
+  padding: 8px;
+ }
+
+ .list{
+flex-grow: 1; 
+border: solid 1px #b80084;
+padding: 8px;
+margin: 4px;
+border-radius: 5px;
+text-align: center;
+
+
+ }
+.removeFromCartBtn{
+  
+  background: none; 
+  border: none;
+  color: #760303;
+  font-size: 16px; 
+  font-weight: bold;
+  cursor: pointer; 
+
 }
+
 .btn button {
     width: 45%;
     display: flex;
-    padding: 8px 16px;
+    padding: 12px 16px;
     background-color: #8a2be2; 
     border-radius: 8px;
     color: #5d0303;
@@ -152,11 +178,32 @@ h1:hover {
     border: #5d0303;
 
   }
-  /*
-  .deleteBtn .agregar {
-    background-color:#8a2be2; 
-    margin: 8px;
-    color: #5d0303;
+/* paginacion */ 
+  .pagination {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination a, .pagination span {
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+  
+  .deleteBtn  {
+    padding: 4px;
+  border: none;
+  border-radius: 5px;
+  color: #760303;
+  font-weight: bold;
+
+  border: solid 1px #b80084;
    cursor: pointer;
   }
   
@@ -164,7 +211,20 @@ h1:hover {
     background-color:transparent;
     border:solid 1px #5d0303;
   }
-    */
+  .addToCartBtn{
+    padding: 4px;
+    border: none;
+    border-radius: 5px;
+    color: #020d83;
+    font-weight: bold;
+    border: solid 1px #b80084;
+     cursor: pointer;
+  }
+  .addToCartBtn:hover {
+    background-color:transparent;
+    border:solid 1px #5d0303;
+  }
+
 .navbar{
    width: 100%;
   display: flex;

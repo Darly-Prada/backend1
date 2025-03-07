@@ -15,7 +15,6 @@ const cartList = document.getElementById('cartList');
 productForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  // Captura de los valores del formulario
   const newProduct = {
     title: productTitle.value,
     price: productPrice.value,
@@ -25,27 +24,24 @@ productForm.addEventListener('submit', (e) => {
     stock: productStock.value,
   };
 
-  socket.emit('addProduct', newProduct); // Emitir evento para agregar producto
-  productForm.reset(); // Resetear el formulario
+  socket.emit('addProduct', newProduct);  
+  productForm.reset();  
 });
-
-// Escuchar evento para actualizar productos en la lista
 socket.on('updateProducts', (products) => {
-  productList.innerHTML = '';  // Limpiar lista de productos
+  productList.innerHTML = ''; 
 
-  // Crear y agregar los nuevos productos a la lista
   products.forEach(product => {
     const li = document.createElement('li');
     li.id = `product-${product._id}`;
     li.innerHTML = `
       ${product.title} - $${product.price} - ${product.description} - ${product.category} - ${product.code} - ${product.stock}
-      <button class="deleteBtn" data-id="${product._id}">Eliminar</button>
+      <button class="deleteBtn" data-id="${product._id}">Eliminar Producto</button>
       <button class="addToCartBtn" data-id="${product._id}">Agregar al carrito</button>
     `;
     productList.appendChild(li);
   });
 
-  // Eliminar producto
+  // Boton Eliminar producto
   const deleteButtons = document.querySelectorAll('.deleteBtn');
   deleteButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -59,32 +55,31 @@ socket.on('updateProducts', (products) => {
   addToCartButtons.forEach(button => {
     button.addEventListener('click', () => {
       const productId = button.dataset.id;
-      socket.emit('addToCart', productId); // Emitir evento para agregar al carrito
+      socket.emit('addToCart', productId);
     });
   });
 });
 
-// Escuchar evento para actualizar el carrito
+// Escuchar evento y actualizar carrito
 socket.on('cartUpdated', (cart) => {
-  cartList.innerHTML = '';  // Limpiar carrito
+  cartList.innerHTML = '';  
 
-  // Crear y agregar los productos del carrito a la lista
   cart.products.forEach(item => {
     const li = document.createElement('li');
     li.classList.add('list');
     li.innerHTML = `
       ${item.productId.title} - Cantidad: ${item.quantity}
-      <button class="removeFromCartBtn" data-id="${item.productId._id}">Eliminar</button>
+      <button class="removeFromCartBtn" data-id="${item.productId._id}">❌</button>
     `;
     cartList.appendChild(li);
   });
 
-  // Eliminar producto del carrito
+  // Eliminar producto del carrito individual 
   const removeFromCartButtons = document.querySelectorAll('.removeFromCartBtn');
   removeFromCartButtons.forEach(button => {
     button.addEventListener('click', () => {
       const productId = button.dataset.id;
-      socket.emit('removeFromCart', productId); // Emitir evento para eliminar producto del carrito
+      socket.emit('removeFromCart', productId);
     });
   });
 });
@@ -96,10 +91,10 @@ if (emptyCartButton) {
     socket.emit('emptyCart'); // Emitir evento para vaciar carrito
   });
 }
-// Redirigir a página en blanco cuando se hace clic en "Comprar mis Productos"
-const buyButton = document.querySelector('.buyBtn'); // Cambié la clase aquí
+// Redirigir a página en blanco cuando se hace clic en "Comprar mis Productos" en desarrollo
+const buyButton = document.querySelector('.buyBtn'); 
 if (buyButton) {
   buyButton.addEventListener('click', () => {
-    window.location.href = '/empty'; // Redirigir a una página en blanco
+    window.location.href = '/empty'; // en Desarrollo
   });
 }

@@ -18,17 +18,13 @@ export const getCartById = async (req, res) => {
   try {
     const cart = await cartModel.findById(cid).populate('products.productId', 'price descripcion');
     if (!cart) return res.status(404).json({ message: 'Carrito no encontrado' });
-
-    // Calcular el total del carrito
     cart.calculateTotal(); 
     await cart.save();
-    
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener el carrito', error: error.message });
   }
 };
-
 
 // Agregar un producto al carrito
 export const addProductToCart = async (req, res) => {
@@ -39,11 +35,6 @@ export const addProductToCart = async (req, res) => {
 
     const product = await productModel.findById(pid);
     if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
-
-    console.log('Producto recuperado completo:', product);
-    console.log('Producto recuperado:', product);
-    console.log('Precio del producto recuperado:', product.price);
-    console.log('Tipo de dato de product.price:', typeof product.price);
 
     const existingProduct = cart.products.find(p => p.productId.toString() === pid);
     if (existingProduct) {
@@ -63,7 +54,6 @@ export const addProductToCart = async (req, res) => {
       total += (item.price) * (item.quantity);
     });
     cart.total = total;
-
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
@@ -77,7 +67,6 @@ export const removeProductFromCart = async (req, res) => {
   try {
     const cart = await cartModel.findById(cid);
     if (!cart) return res.status(404).json({ message: 'Carrito no encontrado' });
-
     cart.products = cart.products.filter(p => p.productId.toString() !== pid);
     cart.calculateTotal(); // Recalcular el total
     await cart.save();
@@ -86,7 +75,6 @@ export const removeProductFromCart = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar el producto del carrito', error: error.message });
   }
 };
-
 // Vaciar el carrito
 export const clearCart = async (req, res) => {
   const { cid } = req.params;
@@ -95,7 +83,7 @@ export const clearCart = async (req, res) => {
     if (!cart) return res.status(404).json({ message: 'Carrito no encontrado' });
 
     cart.products = [];
-    cart.total = 0; // Reiniciar el total
+    cart.total = 0;
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
