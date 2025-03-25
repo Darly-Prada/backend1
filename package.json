@@ -5,7 +5,7 @@
   "main": "servidor.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch servidor.js"
+    "dev": "node servidor.js"
   },
   "keywords": [],
   "author": "",
